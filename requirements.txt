@@ -1,0 +1,8 @@
+tf-nightly
+numpy
+pandas
+matplotlib
+nltk
+scikit-learn
+tqdm
+flask

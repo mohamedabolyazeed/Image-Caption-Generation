@@ -1,0 +1,5 @@
+# Ignore dataset folder and its contents
+dataset/
+
+# Ignore venv folder and its contents 
+venv/

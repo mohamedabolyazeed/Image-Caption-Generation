@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Caption Generator</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>✨ Image Caption Generator ✨</h1>
+      <p class="subtitle">
+        Upload an image and let AI create a caption for you!
+      </p>
+      <form
+        action="/generate"
+        method="POST"
+        enctype="multipart/form-data"
+        class="upload-form"
+      >
+        <div class="file-input-wrapper">
+          <input
+            type="file"
+            name="image"
+            id="image"
+            accept="image/*"
+            required
+            onchange="previewImage(event)"
+          />
+          <label for="image" class="file-label">Choose an Image</label>
+        </div>
+        <div class="image-preview" id="imagePreview">
+          {% if image_url %}
+          <img
+            src="{{ url_for('static', filename=image_url) }}"
+            alt="Uploaded Image"
+            id="previewImage"
+          />
+          {% endif %}
+        </div>
+        <button type="submit" class="generate-btn">Generate Caption</button>
+      </form>
+      {% if caption %}
+      <div class="caption-box">
+        <h2>Generated Caption:</h2>
+        <p>{{ caption }}</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <script>
+      function previewImage(event) {
+        const imagePreview = document.getElementById("imagePreview");
+        imagePreview.innerHTML = ""; // Clear previous image
+        const img = document.createElement("img");
+        img.src = URL.createObjectURL(event.target.files[0]);
+        img.alt = "Uploaded Image";
+        img.id = "previewImage";
+        imagePreview.appendChild(img);
+      }
+
+      // Ensure the image persists after form submission
+      document.addEventListener("DOMContentLoaded", function () {
+        const imageInput = document.getElementById("image");
+        const imagePreview = document.getElementById("imagePreview");
+        const previewImage = document.getElementById("previewImage");
+
+        // If there's an image already from the server, keep it
+        if (previewImage) {
+          imagePreview.innerHTML = ""; // Clear any placeholder
+          imagePreview.appendChild(previewImage);
+        }
+
+        // Update the image when a new one is selected
+        imageInput.addEventListener("change", function (event) {
+          previewImage(event);
+        });
+      });
+    </script>
+  </body>
+</html>
